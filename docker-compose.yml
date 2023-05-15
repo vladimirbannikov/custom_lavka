@@ -1,53 +1,32 @@
-version: "2.3"
-
+version: '3.9'
 services:
-    postgres:
-        container_name: service-postgres
-        image: postgres:15.2-alpine
-        environment:
-          - POSTGRES_DB=enrollment_template_db-1
-          - POSTGRES_USER=user
-          - POSTGRES_PASSWORD=password
-        ports:
-          - 5432
-        volumes:
-          - ./postgresql/schemas:/docker-entrypoint-initdb.d
-          - ./.pgdata:/var/lib/postgresql/data
-        networks:
-          - postgres
+  application:
+    build: .
+    restart: always
+    environment:
+      POSTGRES_DSN: postgresql://postgres:password@db/postgres
+      POSTGRES_SERVER: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - enrollment
 
-    enrollment_template-container:
-        image: ghcr.io/userver-framework/docker-userver-build-base:v1a
-        privileged: true
-        environment:
-          - POSTGRES_DB=enrollment_template_db-1
-          - POSTGRES_USER=user
-          - POSTGRES_PASSWORD=password
-          - PREFIX=${PREFIX:-~/.local}
-          - CC
-          - CCACHE_DIR=/enrollment_template/.ccache
-          - CCACHE_HASHDIR
-          - CCACHE_NOHASHDIR
-          - CCACHE_PREFIX
-          - CCACHE_SIZE
-          - CMAKE_OPTS
-          - CORES_DIR=/cores
-          - CXX
-          - MAKE_OPTS
-        volumes:
-          - .:/enrollment_template:rw
-          - ./third_party/userver/tools/docker:/tools:ro
-          - ${TC_CORES_DIR:-./.cores}:/cores:rw
-        ports:
-          - 8080:8080
-        working_dir: /enrollment_template
-        entrypoint:
-          - /tools/run_as_user.sh
-        depends_on:
-          - postgres
-        networks:
-          - postgres
+  db:
+    image: postgres:15.2-alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+    expose:
+      - "5432"
+    restart: always
+    networks:
+      - enrollment
 
 networks:
-    postgres:
-        driver: bridge
+  enrollment:
+    driver: bridge

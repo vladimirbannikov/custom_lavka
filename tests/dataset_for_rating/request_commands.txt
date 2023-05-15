@@ -1,0 +1,47 @@
+wget -Oresult.txt --post-file couriers.txt 127.0.0.1:8080/couriers
+wget -Oresult.txt --post-file orders.txt 127.0.0.1:8080/orders
+wget -Oresult.txt --post-file complete_orders.txt 127.0.0.1:8080/orders/complete
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-02-07&endDate=2016-06-21"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-20&endDate=2016-06-21"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-20&endDate=2016-12-10"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-20&endDate=2016-06-25"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-22&endDate=2016-06-23"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-22&endDate=2016-12-09"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-01-08&endDate=2016-06-06"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-08&endDate=2016-06-08"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/1?startDate=2016-06-08&endDate=2016-01-09"
+
+
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-02-07&endDate=2016-06-21"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-20&endDate=2016-06-21"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-20&endDate=2016-12-10"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-20&endDate=2016-06-25"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-22&endDate=2016-06-24"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-22&endDate=2016-12-09"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-01-08&endDate=2016-06-06"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-08&endDate=2016-06-08"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/2?startDate=2016-06-08&endDate=2016-01-09"
+
+
+
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-02-07&endDate=2016-06-21"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-20&endDate=2016-06-21"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-20&endDate=2016-12-10"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-20&endDate=2016-06-25"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-22&endDate=2016-06-24"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-22&endDate=2016-12-09"
+
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-01-08&endDate=2016-06-06"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-08&endDate=2016-06-08"
+wget -Oresult.txt "127.0.0.1:8080/couriers/meta-info/3?startDate=2016-06-08&endDate=2016-01-09"

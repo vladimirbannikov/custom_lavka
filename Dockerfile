@@ -1,5 +1,7 @@
 FROM ghcr.io/userver-framework/docker-userver-build-base:v1a AS builder
 
+WORKDIR /lavka
+
 COPY . ./
 
 RUN ls -a
@@ -10,4 +12,4 @@ FROM builder AS runner
 
 EXPOSE 8080
 
-RUN make service-start-release
+CMD ["make", "service-start-manually-release"]

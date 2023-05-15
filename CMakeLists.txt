@@ -1,17 +1,30 @@
 cmake_minimum_required(VERSION 3.12)
-project(enrollment_template CXX)
+project(lavka CXX)
 
 include(third_party/userver/cmake/SetupEnvironment.cmake)
 include(GNUInstallDirs)
 
 add_subdirectory(third_party/userver)
 
+set(COURIERS_SOURCE
+        src/couriers/CouriersHandler.h src/couriers/CouriersHandler.cpp
+        src/couriers/CouriersIDHandler.h src/couriers/CouriersIDHandler.cpp
+        src/couriers/CouriersMetaInfoHandler.h src/couriers/CouriersMetaInfoHandler.cpp
+        )
+
+set(ORDERS_SOURCE
+        src/orders/OrdersHandler.h src/orders/OrdersHandler.cpp
+        src/orders/OrdersIDHandler.h src/orders/OrdersIDHandler.cpp
+        src/orders/OrdersCompleteHandler.h src/orders/OrdersCompleteHandler.cpp
+        )
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-    src/hello.hpp
-    src/hello.cpp
-)
+        ${COURIERS_SOURCE}
+        ${ORDERS_SOURCE}
+        src/lavka.h
+        src/lavka.cpp
+        )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver-core userver-postgresql)
 
 
@@ -20,25 +33,17 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
 
 
-# Unit Tests
-add_executable(${PROJECT_NAME}_unittest
-    src/hello_test.cpp
-)
-target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver-utest)
-add_google_tests(${PROJECT_NAME}_unittest)
-
-
 # Functional Tests
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
-if(DEFINED ENV{PREFIX})
-	message(STATUS "Set install prefix: $ENV{PREFIX}")
-	file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
-	set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
-endif()
+if (DEFINED ENV{PREFIX})
+    message(STATUS "Set install prefix: $ENV{PREFIX}")
+    file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
+    set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
+endif ()
 
-set(CONFIG_VAR_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/config_vars.yaml)
-set(CONFIG_FALLBACK_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/dynamic_config_fallback.json)
+set(CONFIG_VAR_PATH ${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars.yaml)
+set(CONFIG_FALLBACK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/configs/dynamic_config_fallback.json)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/configs/static_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/configs/static_config.yaml)
 

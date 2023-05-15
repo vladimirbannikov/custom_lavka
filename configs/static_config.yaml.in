@@ -33,7 +33,7 @@ components_manager:
                     overflow_behavior: discard  # Drop logs if the system is too busy to write them down.
 
         tracer:                              # Component that helps to trace execution times and requests in logs.
-            service-name: enrollment_template   # "You know. You all know exactly who I am. Say my name. " (c)
+            service-name: lavka   # "You know. You all know exactly who I am. Say my name. " (c)
 
         dynamic-config:                      # Dynamic config storage options, do nothing
             fs-cache-path: ''
@@ -57,10 +57,41 @@ components_manager:
             throttling_enabled: false
             url_trailing_slash: strict-match
 
-        handler-hello:                    # Finally! Our handler.
-            path: /v1/hello               # Registering handler by URL '/v1/hello'.
-            method: POST                  # It will only reply to POST requests.
-            task_processor: main-task-processor  # Run it on CPU bound task processor
+        handler-couriers:
+            path: /couriers
+            method: POST,GET
+            task_processor: main-task-processor
+            max_requests_per_second: 10
+
+        handler-couriers-id:
+            path: /couriers/{courier_id}
+            method: GET
+            task_processor: main-task-processor
+            max_requests_per_second: 10
+
+        handler-orders:
+            path: /orders
+            method: POST,GET
+            task_processor: main-task-processor
+            max_requests_per_second: 10
+
+        handler-orders-id:
+            path: /orders/{order_id}
+            method: GET
+            task_processor: main-task-processor
+            max_requests_per_second: 10
+
+        handler-orders-complete:
+            path: /orders/complete
+            method: POST
+            task_processor: main-task-processor
+            max_requests_per_second: 10
+
+        handler-couriers-meta-info:
+            path: /couriers/meta-info/{courier_id}
+            method: GET
+            task_processor: main-task-processor
+            max_requests_per_second: 10
 
         postgres-db-1:
             dbconnection: $dbconnection

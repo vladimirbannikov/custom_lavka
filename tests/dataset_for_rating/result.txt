@@ -1,0 +1,1 @@
+{"courier_id":2,"courier_type":"BIKE","earnings":99,"rating":0,"regions":[58],"working_hours":["10:00-18:00"]}

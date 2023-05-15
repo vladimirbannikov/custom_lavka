@@ -6,4 +6,4 @@ is_testing: false
 
 server-port: 8080
 
-dbconnection: 'postgresql://enrollment_template_user:password@localhost:5432/enrollment_template_db-1'
+dbconnection: 'postgresql://lavka_user:password@localhost:5432/lavka_db1'
