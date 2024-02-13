@@ -1,39 +1,40 @@
-# YOUR_SERVICE_NAME
+## Описание
+Сервис - упрощенная версия Яндекс Лавки с REST API. Позволяет работать с курьерами, заказами, распределять заказы по курьерам, получать рейтинги, вычислять заработок курьеров. Также реализован Rate Limiter(RPS = 10). Описание API находится в openapi.json.
 
-Template of a C++ service that uses [userver framework](https://github.com/userver-framework/userver) with PostgreSQL.
-
-
-## Download and Build
-
-To create your own userver-based service follow the following steps:
-
-1. Press the green "Use this template button" at the top of this github page
-2. Clone the service `git clone your-service-repo && cd your-service-repo`
-3. Give a propper name to your service and replace all the occurences of "YOUR_SERVICE_NAME" string with that name
-   (could be done via `find . -not -path "./third_party/*" -not -path ".git/*" -not -path './build_*' -type f | xargs sed -i 's/YOUR_SERVICE_NAME/YOUR_SERVICE_NAME/g'`).
-4. Feel free to tweak, adjust or fully rewrite the source code of your service.
+### Курьеры
+Курьеры работают только в заранее определенных районах, а также различаются по типу: пеший, велокурьер и курьер на автомобиле. От типа зависит объем заказов, которые перевозит курьер. Районы задаются целыми положительными числами, а график работы задается списком строк формата `HH:MM-HH:MM`.
+**Ручки:**
+* POST GET /couriers
+* GET /couriers/{courier_id}
 
 
-## Makefile
+### Заказы
+У заказа есть характеристики — вес, район, время доставки и цена. Время доставки - строка в формате HH:MM-HH:MM. Также можно отмечать, что заказ выполнен курьером (если он найден и не был назначен на другого курьера).
+**Ручки:**
+* POST GET /orders
+* GET /orders/{courier_id}
+* POST /orders/complete
 
-Makefile contains typicaly useful targets for development:
+### Рейтинг курьеров
+Сервис может возвращать заработанные курьером деньги за заказы и его рейтинг.
+Параметры метода:
+* `start_date` - дата начала отсчета рейтинга
+* `end_date` - дата конца отсчета рейтинга.
 
-* `make docker-build-debug` - debug build of the service with all the assertions and sanitizers enabled in docker environment
-* `make docker-test-debug` - does a `make build-debug` and runs all the tests on the result in docker environment
-* `make docker-start-service-release` - does a `make install-release` and runs service in docker environment
-* `make docker-start-service-debug` - does a `make install-debug` and runs service in docker environment
-* `make docker-clean-data` - stop docker containers and clean database data
-* `make format` - autoformat all the C++ and Python sources
-* `make clean-` - cleans the object files
-* `make dist-clean` - clean all, including the CMake cached configurations
-* `make install` - does a `make build-release` and runs install in directory set in environment `PREFIX`
-* `make install-debug` - does a `make build-debug` and runs install in directory set in environment `PREFIX`
+**Заработок:**
+Заработок рассчитывается как сумма оплаты за каждый завершенный развоз в период с `start_date` (включая) до `end_date` (исключая):
+`sum = ∑(cost * C)`
+`C`  — коэффициент, зависящий от типа курьера:
+* пеший — 2
+* велокурьер — 3
+* авто — 4
 
-Edit `Makefile.local` to change the default configuration and build options.
+**Рейтинг рассчитывается по формуле:**
+((число всех выполненных заказов с `start_date` по `end_date`) / (Количество часов между `start_date` и `end_date`)) * C
+`C` - коэффициент, зависящий от типа курьера:
+* пеший = 3
+* велокурьер = 2
+* авто - 1
 
-
-## License
-
-The original template is distributed under the [Apache-2.0 License](https://github.com/userver-framework/userver/blob/develop/LICENSE)
-and [CLA](https://github.com/userver-framework/userver/blob/develop/CONTRIBUTING.md). Services based on the template may change
-the license and CLA.
+**Ручки:**
+* GET /couriers/meta-info/{courier_id}
